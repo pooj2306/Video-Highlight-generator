@@ -1,0 +1,196 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FastAPI: Web Application (Uvicorn)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "app.server:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000",
+        "--reload",
+        "--reload-dir",
+        "app",
+        "--reload-dir",
+        "src"
+      ],
+      "jinja": true,
+      "justMyCode": true,
+      "python": "${workspaceFolder}/venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "FastAPI: Web Application (Python)",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "app.server:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000",
+        "--reload",
+        "--reload-dir",
+        "app",
+        "--reload-dir",
+        "src"
+      ],
+      "justMyCode": true,
+      "python": "${workspaceFolder}/venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Pipeline: Run on Video (Interactive Prompt)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.pipeline",
+      "args": [
+        "--input",
+        "${input:videoPath}",
+        "--domain",
+        "${input:domainPreset}",
+        "--duration",
+        "${input:targetDuration}"
+      ],
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Pipeline: Run Default Sample (talk.mp4)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.pipeline",
+      "args": [
+        "--input",
+        "data/input/talk.mp4",
+        "--domain",
+        "general",
+        "--duration",
+        "90"
+      ],
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Evaluation: Run vs Ground Truth",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.evaluate",
+      "args": [
+        "--manifest",
+        "${input:manifestPath}",
+        "--truth",
+        "${input:truthPath}"
+      ],
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Ablations: Signal Ablation Study",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.ablate",
+      "args": [
+        "--analysis",
+        "${input:analysisPath}",
+        "--truth",
+        "${input:truthPath}",
+        "--duration",
+        "120"
+      ],
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Weights: Fit Per-Domain Weights",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.learn_weights",
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Batch: Process Input Folder",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.batch",
+      "args": [
+        "--input",
+        "data/input",
+        "--domain",
+        "general",
+        "--duration",
+        "120"
+      ],
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Python: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "videoPath",
+      "type": "promptString",
+      "description": "Path to input video (e.g. data/input/my_video.mp4)",
+      "default": "data/input/talk.mp4"
+    },
+    {
+      "id": "domainPreset",
+      "type": "pickString",
+      "description": "Select Domain Preset",
+      "options": [
+        "general",
+        "lecture",
+        "sports",
+        "vlog"
+      ],
+      "default": "general"
+    },
+    {
+      "id": "targetDuration",
+      "type": "promptString",
+      "description": "Target highlight reel duration in seconds",
+      "default": "90"
+    },
+    {
+      "id": "manifestPath",
+      "type": "promptString",
+      "description": "Path to job manifest.json",
+      "default": "data/output/sample_job/sample_manifest.json"
+    },
+    {
+      "id": "truthPath",
+      "type": "promptString",
+      "description": "Path to ground truth JSON file",
+      "default": "data/truth/talk.json"
+    },
+    {
+      "id": "analysisPath",
+      "type": "promptString",
+      "description": "Path to saved analysis JSON file",
+      "default": "data/jobs/sample.analysis.json"
+    }
+  ]
+}
